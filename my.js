@@ -57,7 +57,7 @@ async function getGameState() {
     getEntries();
 
     try {
-        const response = await fetch(`/game/${currentGameId}/status`);
+        const response = await fetch(`../game/${currentGameId}/status`);
         const data = await response.json();
 
         if (data.game) {
@@ -85,7 +85,7 @@ async function getEntries() {
     if (!currentGameId) return;
 
     try {
-        const response = await fetch(`/game/${currentGameId}/entries`);
+        const response = await fetch(`../game/${currentGameId}/entries`);
         const data = await response.json();
 
         if (data.entries) {
@@ -112,7 +112,7 @@ function updateEntriesUI() {
         li.dataset.id = en.id;
 
         const img = document.createElement('img');
-        img.src = `/static/img/${en.name}.png`;
+        img.src = `../static/img/${en.name}.png`;
         img.alt = en.name;
         img.style.borderRadius = '15%';
         img.style.maxWidth = '100%';
@@ -136,7 +136,7 @@ async function selectHero(entryId) {
     if (!currentGameId || !gameState) return;
 
     try {
-        const response = await fetch(`/game/${currentGameId}`, {
+        const response = await fetch(`../game/${currentGameId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -170,7 +170,7 @@ async function getGameResult() {
     if (!currentGameId) return;
 
     try {
-        const response = await fetch(`/game/${currentGameId}/result`);
+        const response = await fetch(`../game/${currentGameId}/result`);
         const data = await response.json();
 
         if (data.res) {
@@ -203,7 +203,7 @@ function showGameResult(players) {
     players[0].banned.forEach(en => {
         resultHTML += `
                                 <li>
-                                    <img src="/static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px; opacity: 0.5;" />
+                                    <img src="../static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px; opacity: 0.5;" />
                                 </li>
         `;
     });
@@ -217,7 +217,7 @@ function showGameResult(players) {
     players[0].picked.forEach(en => {
         resultHTML += `
                                 <li>
-                                    <img src="/static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px;" />
+                                    <img src="../static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px;" />
                                 </li>
         `;
     });
@@ -236,7 +236,7 @@ function showGameResult(players) {
     players[1].banned.forEach(en => {
         resultHTML += `
                                 <li>
-                                    <img src="/static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px; opacity: 0.5;" />
+                                    <img src="../static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px; opacity: 0.5;" />
                                 </li>
         `;
     });
@@ -250,7 +250,7 @@ function showGameResult(players) {
     players[1].picked.forEach(en => {
         resultHTML += `
                                 <li>
-                                    <img src="/static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px;" />
+                                    <img src="../static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px;" />
                                 </li>
         `;
     });
@@ -296,7 +296,7 @@ function updateBanListUI(bannedHeroes, elementId) {
         li.dataset.id = en.id;
 
         const img = document.createElement('img');
-        img.src = `/static/img/${en.name}.png`;
+        img.src = `../static/img/${en.name}.png`;
         img.alt = en.name;
         img.style.borderRadius = '15%';
         img.style.width = '100%';
@@ -317,7 +317,7 @@ function updatePickedListUI(pickedHeroes, elementId) {
         li.dataset.id = en.id;
 
         const img = document.createElement('img');
-        img.src = `/static/img/${en.name}.png`;
+        img.src = `../static/img/${en.name}.png`;
         img.alt = en.name;
         img.style.borderRadius = '15%';
         img.style.maxWidth = '100%';
