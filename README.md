@@ -1,6 +1,10 @@
 # BanPickSys-web
 
-> 小孩子不懂事写着玩的
+> 不会前端, 小孩子不懂事写着玩的
+
+![bp.png](./README.asset/bp.png)
+
+![result.png](./README.asset/result.png)
 
 ## 项目介绍
 
