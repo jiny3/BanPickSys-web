@@ -1,9 +1,9 @@
 // 全局变量
 let currentGameId = null;
 let currentPlayerID = 1; // 默认为蓝方（玩家1）
-let gameState = null;
+let bpState = null;
 let availableEntries = [];
-let gameInterval = null;
+let bpInterval = null;
 
 // 初始化页面
 document.addEventListener('DOMContentLoaded', function () {
@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
         getGameState();
 
         // 设置轮询，每2秒更新一次游戏状态
-        if (gameInterval) {
-            clearInterval(gameInterval);
+        if (bpInterval) {
+            clearInterval(bpInterval);
         }
-        gameInterval = setInterval(getGameState, 1000);
+        bpInterval = setInterval(getGameState, 1000);
     }
     // 初始化事件监听
     switchPlayer();
@@ -57,26 +57,26 @@ async function getGameState() {
     getEntries();
 
     try {
-        const response = await fetch(`../game/${currentGameId}/status`);
+        const response = await fetch(`../bp/${currentGameId}/status`);
         const data = await response.json();
 
-        if (data.game) {
-            gameState = data.game;
-            console.log('Game state:', gameState);
+        if (data.bp) {
+            bpState = data.bp;
+            console.log('bp state:', bpState);
 
             // 更新UI
             updateGameUI();
 
             // 检查游戏是否结束
-            if (gameState.stage0.available_player.id == 0) {
-                clearInterval(gameInterval);
+            if (bpState.stage0.available_player.id == 0) {
+                clearInterval(bpInterval);
                 getGameResult();
             }
         } else {
-            console.error('Failed to get game state', data);
+            console.error('Failed to get bp state', data);
         }
     } catch (error) {
-        console.error('Error getting game state:', error);
+        console.error('Error getting bp state:', error);
     }
 }
 
@@ -85,7 +85,7 @@ async function getEntries() {
     if (!currentGameId) return;
 
     try {
-        const response = await fetch(`../game/${currentGameId}/entries`);
+        const response = await fetch(`../bp/${currentGameId}/entries`);
         const data = await response.json();
 
         if (data.entries) {
@@ -112,14 +112,14 @@ function updateEntriesUI() {
         li.dataset.id = en.id;
 
         const img = document.createElement('img');
-        img.src = `../static/img/${en.name}.png`;
+        img.src = `/bp/static/img/${en.name}.png`;
         img.alt = en.name;
         img.style.borderRadius = '15%';
         img.style.maxWidth = '100%';
 
         li.appendChild(img);
 
-        if (en.banned || en.picked || gameState.stage0.available_player.id != currentPlayerID) {
+        if (en.banned || en.picked || bpState.stage0.available_player.id != currentPlayerID) {
             li.style.pointerEvents = 'none'; // 禁用点击事件
             li.style.opacity = '0.5'; // 设置透明度
         } else {
@@ -133,10 +133,10 @@ function updateEntriesUI() {
 
 // 选择英雄（Ban或Pick）
 async function selectHero(entryId) {
-    if (!currentGameId || !gameState) return;
+    if (!currentGameId || !bpState) return;
 
     try {
-        const response = await fetch(`../game/${currentGameId}`, {
+        const response = await fetch(`../bp/${currentGameId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -170,17 +170,17 @@ async function getGameResult() {
     if (!currentGameId) return;
 
     try {
-        const response = await fetch(`../game/${currentGameId}/result`);
+        const response = await fetch(`../bp/${currentGameId}/result`);
         const data = await response.json();
 
         if (data.res) {
             console.log('Game result:', data.res);
             showGameResult(data.res);
         } else {
-            console.error('Failed to get game result', data);
+            console.error('Failed to get bp result', data);
         }
     } catch (error) {
-        console.error('Error getting game result:', error);
+        console.error('Error getting bp result:', error);
     }
 }
 
@@ -203,7 +203,7 @@ function showGameResult(players) {
     players[0].banned.forEach(en => {
         resultHTML += `
                                 <li>
-                                    <img src="../static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px; opacity: 0.5;" />
+                                    <img src="/bp/static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px; opacity: 0.5;" />
                                 </li>
         `;
     });
@@ -217,7 +217,7 @@ function showGameResult(players) {
     players[0].picked.forEach(en => {
         resultHTML += `
                                 <li>
-                                    <img src="../static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px;" />
+                                    <img src="/bp/static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px;" />
                                 </li>
         `;
     });
@@ -236,7 +236,7 @@ function showGameResult(players) {
     players[1].banned.forEach(en => {
         resultHTML += `
                                 <li>
-                                    <img src="../static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px; opacity: 0.5;" />
+                                    <img src="/bp/static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px; opacity: 0.5;" />
                                 </li>
         `;
     });
@@ -250,7 +250,7 @@ function showGameResult(players) {
     players[1].picked.forEach(en => {
         resultHTML += `
                                 <li>
-                                    <img src="../static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px;" />
+                                    <img src="/bp/static/img/${en.name}.png" alt="${en.name}" style="border-radius: 15%; max-width: 100px;" />
                                 </li>
         `;
     });
@@ -268,22 +268,22 @@ function showGameResult(players) {
 
 // 更新游戏UI
 function updateGameUI() {
-    if (!gameState) return;
+    if (!bpState) return;
 
     // 更新当前阶段
     document.getElementById('current-phase').textContent = getPhaseText();
 
     // 更新蓝队ban位
-    updateBanListUI(gameState.players[0].banned, 'blue-ban-list');
+    updateBanListUI(bpState.players[0].banned, 'blue-ban-list');
 
     // 更新红队ban位
-    updateBanListUI(gameState.players[1].banned, 'red-ban-list');
+    updateBanListUI(bpState.players[1].banned, 'red-ban-list');
 
     // 更新蓝队已选英雄
-    updatePickedListUI(gameState.players[0].picked, 'blue-picked-list');
+    updatePickedListUI(bpState.players[0].picked, 'blue-picked-list');
 
     // 更新红队已选英雄
-    updatePickedListUI(gameState.players[1].picked, 'red-picked-list');
+    updatePickedListUI(bpState.players[1].picked, 'red-picked-list');
 }
 
 // 更新ban列表UI
@@ -296,7 +296,7 @@ function updateBanListUI(bannedHeroes, elementId) {
         li.dataset.id = en.id;
 
         const img = document.createElement('img');
-        img.src = `../static/img/${en.name}.png`;
+        img.src = `/bp/static/img/${en.name}.png`;
         img.alt = en.name;
         img.style.borderRadius = '15%';
         img.style.width = '100%';
@@ -317,7 +317,7 @@ function updatePickedListUI(pickedHeroes, elementId) {
         li.dataset.id = en.id;
 
         const img = document.createElement('img');
-        img.src = `../static/img/${en.name}.png`;
+        img.src = `/bp/static/img/${en.name}.png`;
         img.alt = en.name;
         img.style.borderRadius = '15%';
         img.style.maxWidth = '100%';
@@ -330,15 +330,15 @@ function updatePickedListUI(pickedHeroes, elementId) {
 
 // 获取当前阶段文本
 function getPhaseText() {
-    if (!gameState) return "加载中...";
-    if (gameState.stage0.available_player.id === 0) {
+    if (!bpState) return "加载中...";
+    if (bpState.stage0.available_player.id === 0) {
         return "bp结束";
     }
     // 解析开始时间
-    const startTime = new Date(gameState.stage0.start).getTime();
+    const startTime = new Date(bpState.stage0.start).getTime();
 
     // 将持续时间从纳秒转换为毫秒 (1毫秒 = 1000000纳秒)
-    const durationMs = gameState.stage0.duration / 1000000;
+    const durationMs = bpState.stage0.duration / 1000000;
 
     // 计算结束时间和剩余时间
     const endTime = startTime + durationMs;
@@ -350,7 +350,7 @@ function getPhaseText() {
     const remainingSeconds = Math.floor((remainingTime % 60000) / 1000);
     const timeString = `${remainingMinutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 
-    return `${gameState.stage0.name} (${timeString})`;
+    return `${bpState.stage0.name} (${timeString})`;
 }
 
 // 显示消息
