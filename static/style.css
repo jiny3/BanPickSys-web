@@ -1,0 +1,216 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.section-blue,
+.section-red,
+.section-center {
+    padding: 15px;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+}
+
+.section-blue {
+    border-left: 10px solid #1976D2;
+    max-width: 15%;
+    text-align: left;
+}
+
+.section-red {
+    border-right: 10px solid #D32F2F;
+    max-width: 15%;
+    text-align: right;
+}
+
+.active-section {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#current-phase {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+#blue-ban-list,
+#blue-picked-list,
+#red-ban-list,
+#red-picked-list,
+#available-heroes {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#red-ban-list,
+#red-picked-list {
+    justify-content: flex-end;
+}
+
+#blue-ban-list li,
+#blue-picked-list li,
+#red-ban-list li,
+#red-picked-list li {
+    padding: 5px 10px;
+}
+
+#available-heroes {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+#available-heroes li {
+    max-width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 15%;
+}
+
+#available-heroes li:hover {
+    background-color: #38c7ff;
+}
+
+.player-select-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 15px;
+
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+}
+
+select,
+button {
+    padding: 8px 12px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+button {
+    cursor: pointer;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+}
+
+button:hover {
+    background-color: #0b7dda;
+}
+
+#reset-game {
+    background-color: #f44336;
+}
+
+#reset-game:hover {
+    background-color: #d32f2f;
+}
+
+.result-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.result-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 800px;
+    width: 90%;
+}
+
+.result-players {
+    display: flex;
+    justify-content: space-between;
+}
+
+.result-player {
+    width: 48%;
+}
+
+.result-selections {
+    display: flex;
+}
+
+.result-banned,
+.result-picked {
+    width: 50%;
+}
+
+.new-game-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+@media screen and (max-width: 768px) {
+
+    .section-blue,
+    .section-center,
+    .section-red {
+        width: 100%;
+        float: none;
+        margin-bottom: 15px;
+    }
+}

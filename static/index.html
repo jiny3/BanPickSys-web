@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/my.js" defer></script>
+    <title>Ban-Pick System</title>
+</head>
+
+<body>
+    <!-- 蓝方ban位(靠左) 当前环节(中间) 红方ban位(靠右) -->
+    <div class="container">
+        <div class="section-blue">
+            <h3>蓝方ban位</h3>
+            <ul id="blue-ban-list">
+                <!-- 蓝方ban位列表 -->
+            </ul>
+        </div>
+        <div class="section-center">
+            <h3>当前环节</h3>
+            <p id="current-phase">选择英雄</p>
+        </div>
+        <div class="section-red">
+            <h3>红方ban位</h3>
+            <ul id="red-ban-list">
+                <!-- 红方ban位列表 -->
+            </ul>
+        </div>
+    </div>
+
+    <!--蓝方已选(靠左) 待选列表(中间) 红方已选(靠右)  -->
+    <div class="container">
+        <div class="section-blue">
+            <h3>蓝方已选</h3>
+            <ul id="blue-picked-list">
+                <!-- 蓝方已选列表 -->
+            </ul>
+        </div>
+        <div class="section-center">
+            <h3>待选列表</h3>
+            <ul id="available-heroes">
+                <!-- 待选列表 -->
+            </ul>
+        </div>
+        <div class="section-red">
+            <h3>红方已选</h3>
+            <ul id="red-picked-list">
+                <!-- 红方已选列表 -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- 选择玩家(最下方) -->
+    <div class="container">
+        <div class="player-select-container">
+            当前玩家
+            <select id="player-select">
+                <option value="blue">蓝方</option>
+                <option value="red">红方</option>
+            </select>
+            <button id="ok">确认</button>
+        </div>
+    </div>
+</body>
+
+</html>
