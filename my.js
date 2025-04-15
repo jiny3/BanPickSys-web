@@ -7,23 +7,16 @@ let gameInterval = null;
 
 // 初始化页面
 document.addEventListener('DOMContentLoaded', function () {
-    // 从URL获取当前gameId (exampl: localhost:8080/game/411972312594571400)
-    const pathParts = window.location.pathname.split('/');
-    if (pathParts.length > 2 && pathParts[1] === 'game') {
-        currentGameId = pathParts[2];
-        console.log('Game ID from URL:', currentGameId);
+    currentGameId = localStorage.getItem('gid');
+    if (currentGameId) {
+        // 获取初始游戏状态
+        getGameState();
 
-        // 如果URL中有游戏ID，获取游戏状态
-        if (currentGameId) {
-            // 获取初始游戏状态
-            getGameState();
-
-            // 设置轮询，每2秒更新一次游戏状态
-            if (gameInterval) {
-                clearInterval(gameInterval);
-            }
-            gameInterval = setInterval(getGameState, 1000);
+        // 设置轮询，每2秒更新一次游戏状态
+        if (gameInterval) {
+            clearInterval(gameInterval);
         }
+        gameInterval = setInterval(getGameState, 1000);
     }
     // 初始化事件监听
     switchPlayer();
