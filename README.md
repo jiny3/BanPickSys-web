@@ -19,7 +19,7 @@
 
 ## 使用方法
 
-参考 `BanPickSys` example
+参考 `BanPickSys` 使用方法
 
 ## API接口
 
@@ -31,11 +31,16 @@
 - `/game/{gameId}` - 选择角色 (POST)
 
 ## 文件结构
-
-- index.html - 主HTML结构
-- my.js - JavaScript功能实现
-- style.css - CSS样式
-- img - 角色图片
+```bash
+BanPickSys-web
+├── img
+│   ├── 刺头海豹.png
+│   ├── ...
+├── index.html
+├── my.js
+├── README.md
+└── style.css
+```
 
 ## 注意事项
 
