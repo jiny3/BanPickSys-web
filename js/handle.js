@@ -6,22 +6,21 @@ let availableEntries = [];
 let bpInterval = null;
 
 // 初始化页面
-document.addEventListener('DOMContentLoaded', function () {
-    currentGameId = localStorage.getItem('gid');
-    if (currentGameId) {
+function init() {
+    if (!currentGameId) {
         // 获取初始游戏状态
-        getGameState();
-
-        // 设置轮询，每2秒更新一次游戏状态
-        if (bpInterval) {
-            clearInterval(bpInterval);
-        }
-        bpInterval = setInterval(getGameState, 1000);
+        currentGameId = localStorage.getItem('gid');
+        // 初始化事件监听
+        document.getElementById('ok').addEventListener('click', switchPlayer);
+        ws();
     }
-    // 初始化事件监听
-    switchPlayer();
-    document.getElementById('ok').addEventListener('click', switchPlayer);
-});
+    if (!bpInterval) {
+        // 每隔5秒获取一次游戏状态
+        bpInterval = setInterval(updatePhaseUI, 500);
+    }
+}
+// 页面加载完成后初始化
+window.addEventListener('DOMContentLoaded', init);
 
 // 切换玩家函数
 function switchPlayer() {
@@ -54,8 +53,6 @@ function updateCurrentPlayerUI() {
 // 获取游戏状态
 async function getGameState() {
     if (!currentGameId) return;
-    getEntries();
-
     try {
         const response = await fetch(`../bp/${currentGameId}/status`);
         const data = await response.json();
@@ -78,6 +75,7 @@ async function getGameState() {
     } catch (error) {
         console.error('Error getting bp state:', error);
     }
+    getEntries();
 }
 
 // 获取可用英雄
@@ -154,7 +152,7 @@ async function selectHero(entryId) {
             showMessage('选择成功！', 'success');
 
             // 立即更新游戏状态
-            getGameState();
+            // getGameState();
         } else {
             console.error('Failed to select hero', data);
             showMessage(data.error || '选择失败，请重试', 'error');
@@ -266,12 +264,15 @@ function showGameResult(players) {
     document.body.appendChild(resultDiv);
 }
 
+// 更新当前阶段
+function updatePhaseUI() {
+    // 更新当前阶段
+    document.getElementById('current-phase').textContent = getPhaseText();
+}
+
 // 更新游戏UI
 function updateGameUI() {
     if (!bpState) return;
-
-    // 更新当前阶段
-    document.getElementById('current-phase').textContent = getPhaseText();
 
     // 更新蓝队ban位
     updateBanListUI(bpState.players[0].banned, 'blue-ban-list');
