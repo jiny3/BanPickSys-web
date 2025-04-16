@@ -23,22 +23,29 @@
 
 ## API接口
 
-- `/game` - 启动一场新 bp (GET)
-- `/game/{gameId}` - 进入指定 bp 场次 (GET)
-- `/game/{gameId}/status` - 获取当前游戏状态
-- `/game/{gameId}/entries` - 获取可选角色列表
-- `/game/{gameId}/result` - 获取游戏结果
-- `/game/{gameId}` - 选择角色 (POST)
+| 接口 | 方法 | 说明 |
+|------|------|------|
+| `/bp` | GET | 启动一场新 bp |
+| `/bp/{bpID}` | GET | 进入指定 bp 场次 |
+| `/bp/{bpID}/status` | GET | 获取当前bp状态 |
+| `/bp/{bpID}/entries` | GET | 获取可选角色列表 |
+| `/bp/{bpID}/result` | GET | 获取bp结果 |
+| `/bp/{bpID}/submit` | POST | 选择角色 |
+| `/bp/{bpID}/join` | POST | 加入指定 bp 场次 |
+| `/bp/{bpID}/leave` | POST | 离开指定 bp 场次 |
 
 ## 文件结构
 ```bash
 BanPickSys-web
-├── img
+├── img         # 图像资源
 │   ├── 刺头海豹.png
 │   ├── ...
+│   └── 黑化海豹.png
 ├── index.html
-├── my.js
-├── README.md
+├── js          # JavaScript文件
+│   ├── api.js
+│   ├── display.js
+│   └── ws.js
 └── style.css
 ```
 
